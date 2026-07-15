@@ -1,8 +1,850 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dmjio — Software Engineer</title>
+  <meta name="description" content="Software engineer with 17 years of experience in compilers, functional programming, systems programming, and web technologies — across research, quantitative finance, consulting, and tech." />
+  <meta name="keywords" content="software engineer, Haskell, GHC, compilers, functional programming, systems programming, static analysis, algorithms, devops, LynxJS, React Native, miso, quantitative finance" />
+  <meta name="author" content="dmjio" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#09090d" />
+  <link rel="canonical" href="https://dmj.io" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dmj.io" />
+  <meta property="og:title" content="dmjio — Software Engineer" />
+  <meta property="og:description" content="Software engineer with 17 years of experience in compilers, functional programming, systems programming, and web technologies — across research, quantitative finance, consulting, and tech." />
+  <meta property="og:image" content="https://dmj.io/og.svg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,200;9..144,300&family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "dmjio",
+    "alternateName": "dmjio",
+    "url": "https://dmj.io",
+    "email": "code@dmj.io",
+    "sameAs": ["https://github.com/dmjio"],
+    "jobTitle": "Software Engineer",
+    "description": "Software engineer with 17 years of experience in compilers, functional programming, systems programming, and web technologies — across research, quantitative finance, consulting, and tech.",
+    "hasCredential": {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "MSc. Computer Science"
+    },
+    "knowsAbout": [
+      "Compilers", "Functional Programming", "Systems Programming",
+      "Algorithms and Data Structures", "Static Analysis",
+      "Web Technologies", "Development Operations"
+    ]
+  }
+  </script>
+
+  <style>
+    /* ── Design Tokens ───────────────────────────────────────────── */
+    :root {
+      --bg:           #03030a;
+      --bg-raised:    #08080f;
+      --bg-border:    #131320;
+      --text:         #ffffff;
+      --text-muted:   #c0c8d8;
+      --text-faint:   #58607a;
+      --gold:         #38bdf8;
+      --gold-bright:  #7dd3fc;
+      --gold-glow:    rgba(56, 189, 248, 0.07);
+      --gold-border:  rgba(56, 189, 248, 0.2);
+      --teal:         #34d399;
+      --green:        #86efac;
+      --ff-serif:     'Fraunces', Georgia, 'Times New Roman', serif;
+      --ff-mono:      'IBM Plex Mono', 'Courier New', monospace;
+      --ease:         cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--ff-mono);
+      font-weight: 400;
+      line-height: 1.7;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* Dot grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient glow — top left */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -40%;
+      left: -10%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(ellipse, rgba(56, 189, 248, 0.05) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: clamp(1.25rem, 3vw, 2rem) 0;
+      border-bottom: 1px solid var(--bg-border);
+    }
+
+    .nav-brand {
+      font-family: var(--ff-mono);
+      font-size: 0.775rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-brand:hover { color: var(--gold-bright); }
+
+    .nav-links {
+      display: flex;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    .hero {
+      padding: clamp(4.5rem, 11vw, 8.5rem) 0 clamp(3.5rem, 7vw, 6rem);
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.05s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--ff-mono);
+      font-weight: 400;
+      font-size: clamp(3rem, 8.5vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.18s forwards;
+    }
+
+    .hero-bio {
+      font-family: var(--ff-mono);
+      font-size: clamp(0.8rem, 1.6vw, 0.88rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 52ch;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.33s forwards;
+    }
+
+    .hero-sig {
+      font-family: var(--ff-mono);
+      font-size: clamp(0.78rem, 1.8vw, 0.95rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+      line-height: 1.5;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.4s forwards;
+    }
+
+    .hero-sig .punct  { color: var(--gold); }
+    .hero-sig .type   { color: var(--teal); }
+    .hero-sig .op     { color: var(--text-faint); }
+
+    .hero-divider {
+      width: 3rem;
+      height: 1px;
+      background: var(--gold-border);
+      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.44s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: clamp(2rem, 5vw, 4.5rem);
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.52s forwards;
+    }
+
+    .stat { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .stat-value {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 200;
+      line-height: 1;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .stat-label {
+      font-family: var(--ff-mono);
+      font-size: 0.665rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Hero decorative annotation — desktop only */
+    .hero-deco {
+      display: none;
+    }
+
+    @media (min-width: 720px) {
+      .hero-deco {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 0;
+        top: clamp(4.5rem, 11vw, 8.5rem);
+        font-family: var(--ff-mono);
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        text-align: right;
+        line-height: 2.1;
+        pointer-events: none;
+        user-select: none;
+        opacity: 0;
+        animation: fadeIn 1.5s var(--ease) 0.8s forwards;
+      }
+    }
+
+    /* ── Section Scaffold ────────────────────────────────────────── */
+    section {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+      border-top: 1px solid var(--bg-border);
+    }
+
+    .section-label {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--bg-border);
+    }
+
+    .section-heading {
+      font-family: var(--ff-serif);
+      font-weight: 300;
+      font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.1rem;
+      color: var(--text);
+    }
+
+    .section-body {
+      font-family: var(--ff-mono);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 54ch;
+    }
+
+    .section-body a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .section-body a:hover { color: var(--gold-bright); border-color: var(--gold); }
+
+    /* ── Projects ────────────────────────────────────────────────── */
+    .projects-grid {
+      margin-top: 2.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--bg-border);
+      border: 1px solid var(--bg-border);
+    }
+
+    .project-card {
+      background: var(--bg);
+      padding: 1.75rem 1.75rem 1.5rem;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .project-card:hover { background: var(--bg-raised); }
+
+    .project-name {
+      font-family: var(--ff-mono);
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-arrow {
+      font-size: 0.75rem;
+      opacity: 0;
+      transform: translate(0, 0);
+      transition: opacity 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .project-card:hover .project-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
+    .project-desc {
+      font-family: var(--ff-mono);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-meta {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .project-lang {
+      font-family: var(--ff-mono);
+      font-size: 0.63rem;
+      font-weight: 400;
+      color: var(--teal);
+      letter-spacing: 0.06em;
+      background: rgba(75, 155, 157, 0.1);
+      border: 1px solid rgba(75, 155, 157, 0.2);
+      padding: 0.18rem 0.55rem;
+    }
+
+    .project-status {
+      font-family: var(--ff-mono);
+      font-size: 0.63rem;
+      font-weight: 300;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Expertise Grid ──────────────────────────────────────────── */
+    .expertise-grid {
+      margin-top: 2.25rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--bg-border);
+      border: 1px solid var(--bg-border);
+    }
+
+    .expertise-item {
+      background: var(--bg);
+      padding: 1.4rem 1.35rem 1.2rem;
+      position: relative;
+      cursor: default;
+      transition: background 0.2s;
+    }
+
+    .expertise-item:hover { background: var(--bg-raised); }
+    .expertise-item:hover .e-name { color: var(--text); }
+
+    .e-glyph {
+      display: block;
+      font-family: var(--ff-mono);
+      font-size: 1.1rem;
+      color: var(--gold);
+      opacity: 0.55;
+      margin-bottom: 0.7rem;
+      line-height: 1;
+      transition: opacity 0.2s;
+    }
+
+    .expertise-item:hover .e-glyph { opacity: 0.85; }
+
+    /* 7 items in 4-col grid: last item alone on row 2 — span it to fill */
+    .expertise-item:nth-child(7):last-child { grid-column: span 2; }
+
+    .e-name {
+      font-family: var(--ff-mono);
+      font-size: 0.775rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.4;
+      transition: color 0.2s;
+    }
+
+    .e-idx {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.9rem;
+      font-family: var(--ff-mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Industries ──────────────────────────────────────────────── */
+    .industries {
+      margin-top: 2.25rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--bg-border);
+      border: 1px solid var(--bg-border);
+    }
+
+    .industry-item {
+      background: var(--bg);
+      padding: 1.6rem 1.5rem 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .industry-item:hover { background: var(--bg-raised); }
+
+    .industry-name {
+      font-family: var(--ff-serif);
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.25;
+      margin-bottom: 0.45rem;
+      transition: color 0.2s;
+    }
+
+    .industry-item:hover .industry-name { color: var(--text); }
+
+    .industry-sub {
+      font-family: var(--ff-mono);
+      font-size: 0.62rem;
+      font-weight: 300;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+
+    /* ── Writing ─────────────────────────────────────────────────── */
+    .writing-list {
+      margin-top: 2rem;
+      border-top: 1px solid var(--bg-border);
+    }
+
+    .writing-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--bg-border);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .writing-item-left { flex: 1; }
+
+    .writing-title {
+      font-family: var(--ff-serif);
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+
+    .writing-item:hover .writing-title { color: var(--text); }
+
+    .writing-tag {
+      display: inline-block;
+      margin-top: 0.4rem;
+      font-family: var(--ff-mono);
+      font-size: 0.62rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .writing-date {
+      font-family: var(--ff-mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .writing-soon {
+      font-family: var(--ff-mono);
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--text-faint);
+      padding: 2rem 0 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      padding: clamp(2rem, 4vw, 3rem) 0 clamp(2rem, 4vw, 2.5rem);
+      border-top: 1px solid var(--bg-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-family: var(--ff-mono);
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .footer-links a {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── Scroll Reveal ───────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── Animations ──────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .expertise-grid { grid-template-columns: repeat(4, 1fr); }
+      .industries { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+
+      .hero { padding: 3.5rem 0 3rem; }
+
+      .hero-name {
+        font-size: clamp(2.75rem, 14vw, 3.75rem);
+        letter-spacing: -0.035em;
+      }
+
+      .hero-bio { font-size: 0.78rem; margin-bottom: 1.5rem; }
+      .hero-sig { font-size: 0.72rem; line-height: 1.9; }
+      .hero-stats { gap: 1.5rem; }
+      .stat-value { font-size: 1.5rem; }
+
+      .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+      .industries { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+
+      .writing-item { flex-direction: column; gap: 0.35rem; }
+      .writing-date { display: none; }
+    }
+
+    @media (max-width: 420px) {
+      .hero-name { font-size: 2.5rem; }
+      .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+      .industries { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .hero-deco { opacity: 1 !important; }
+    }
+  </style>
 </head>
+
 <body>
-  my website
+  <div class="wrap">
+
+    <!-- Navigation -->
+    <nav aria-label="Primary navigation">
+      <a class="nav-brand" href="/" aria-label="dmj.io — home">dmj.io</a>
+      <ul class="nav-links" role="list">
+        <li><a href="#now">Now</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="mailto:code@dmj.io">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero" aria-label="Introduction">
+      <p class="hero-eyebrow">Software Engineer</p>
+      <h1 class="hero-name">dmjio</h1>
+
+      <p class="hero-bio">
+        17 years of software engineering experience spanning frontend, backend, mobile development,
+        database management, development operations, compiler engineering — across research,
+        quantitative finance, consulting, and tech.
+      </p>
+
+      <p class="hero-sig" aria-label="Type signature">
+        <span class="punct"></span>&nbsp;<span class="type">Engineer</span>
+        <span class="op"> . </span><span class="type">Researcher</span>
+        <span class="op"> . </span><span class="type">Builder</span>
+      </p>
+
+      <div class="hero-divider" role="presentation"></div>
+
+      <div class="hero-stats" role="list" aria-label="Career highlights">
+        <div class="stat" role="listitem">
+          <span class="stat-value">MSc</span>
+          <span class="stat-label">Computer Science</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Currently -->
+    <section id="now" aria-labelledby="now-heading">
+      <p class="section-label" aria-hidden="true">Now</p>
+      <h2 class="section-heading reveal" id="now-heading">Currently working on</h2>
+      <p class="section-body reveal reveal-delay-1">
+        Implementing a dual-thread React Native architecture
+        in <a href="https://www.haskell.org/ghc/" rel="noopener noreferrer">GHC Haskell</a>
+        using <a href="https://lynxjs.org" rel="noopener noreferrer">LynxJS</a> —
+        bridging Haskell's type system to native mobile runtimes
+        using distributed computing between JS and UI threads. See <a href="https://github.com/haskell-miso/miso-lynx" rel="noopener noreferrer">miso-lynx</a> for more info.
+      </p>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" aria-labelledby="projects-heading">
+      <p class="section-label" aria-hidden="true">Projects</p>
+      <h2 class="section-heading reveal" id="projects-heading">Open source</h2>
+      <p class="section-body reveal reveal-delay-1">
+        Selected work. Full history on <a href="https://github.com/dmjio" rel="noopener noreferrer">GitHub</a>.
+      </p>
+      <div class="projects-grid reveal reveal-delay-2">
+
+        <a class="project-card" href="https://github.com/dmjio/miso" rel="noopener noreferrer" aria-label="miso — Haskell front-end framework">
+          <p class="project-name">
+            miso
+            <span class="project-arrow" aria-hidden="true">↗</span>
+          </p>
+          <p class="project-desc">
+            A Haskell library for building type-safe,
+            composable web and mobile applications, in a convenient DSL. Supports
+            both WASM and JavaScript backends with a virtual DOM.
+            React and Elm-inspired architecture.
+          </p>
+          <div class="project-meta">
+            <span class="project-lang">Haskell</span>
+            <span class="project-status">open source · active</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/haskell-miso/miso-lynx" rel="noopener noreferrer" aria-label="miso-lynx — Haskell bindings to LynxJS">
+          <p class="project-name">
+            miso-lynx
+            <span class="project-arrow" aria-hidden="true">↗</span>
+          </p>
+          <p class="project-desc">
+            LynxJS dual-thread integration for miso — write type-safe, cross-platform native
+            mobile apps (iOS, Android, HarmonyOS) in Haskell.
+          </p>
+          <div class="project-meta">
+            <span class="project-lang">Haskell</span>
+            <span class="project-status">open source · active</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Expertise -->
+    <section id="expertise" aria-labelledby="expertise-heading">
+      <p class="section-label" aria-hidden="true">Expertise</p>
+      <h2 class="section-heading reveal" id="expertise-heading">Areas of focus</h2>
+      <div class="expertise-grid reveal reveal-delay-1" role="list" aria-label="Technical expertise areas">
+        <div class="expertise-item" role="listitem">
+          <span class="e-glyph" aria-hidden="true">λ</span>
+          <span class="e-name">Functional<br/>Programming</span>
+          <span class="e-idx" aria-hidden="true">01</span>
+        </div>
+        <div class="expertise-item" role="listitem">
+          <span class="e-glyph" aria-hidden="true">▲</span>
+          <span class="e-name">Systems<br/>Programming</span>
+          <span class="e-idx" aria-hidden="true">02</span>
+        </div>
+        <div class="expertise-item" role="listitem">
+          <span class="e-glyph" aria-hidden="true">&lt;/&gt;</span>
+          <span class="e-name">Web Technologies</span>
+          <span class="e-idx" aria-hidden="true">03</span>
+        </div>
+        <div class="expertise-item" role="listitem">
+          <span class="e-glyph" aria-hidden="true">⚙</span>
+          <span class="e-name">Development<br/>Operations</span>
+          <span class="e-idx" aria-hidden="true">04</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Background -->
+    <section id="background" aria-labelledby="background-heading">
+      <p class="section-label" aria-hidden="true">Background</p>
+      <h2 class="section-heading reveal" id="background-heading">Across industries</h2>
+      <div class="industries reveal reveal-delay-1" role="list" aria-label="Industry experience">
+        <div class="industry-item" role="listitem">
+          <p class="industry-name">Quantitative<br/>Finance</p>
+          <p class="industry-sub">Trading systems</p>
+        </div>
+        <div class="industry-item" role="listitem">
+          <p class="industry-name">Research</p>
+          <p class="industry-sub">CS</p>
+        </div>
+        <div class="industry-item" role="listitem">
+          <p class="industry-name">Tech<br/>Consulting</p>
+          <p class="industry-sub">Architecture · Implementation</p>
+        </div>
+        <div class="industry-item" role="listitem">
+          <p class="industry-name">Tech</p>
+          <p class="industry-sub">Startups · Product</p>
+        </div>
+      </div>
+    </section>
+
+<!-- Footer -->
+    <footer role="contentinfo">
+      <p class="footer-copy">© 2026 dmj.io &nbsp;</p>
+      <nav class="footer-links" aria-label="Social links">
+        <a href="https://github.com/dmjio" rel="noopener noreferrer" aria-label="GitHub profile">GitHub</a>
+<a href="mailto:code@dmj.io" aria-label="Send email">Email</a>
+      </nav>
+    </footer>
+
+  </div><!-- /.wrap -->
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+          observer.unobserve(el.target);
+        }
+      }),
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>

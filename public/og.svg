@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#03030a"/>
+
+  <!-- Dot grid -->
+  <defs>
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(56,189,248,0.07)"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Border -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#131320" stroke-width="1"/>
+
+  <!-- Cyan accent line -->
+  <rect x="40" y="40" width="3" height="550" fill="#38bdf8"/>
+
+  <!-- Brand -->
+  <text x="100" y="120" font-family="monospace" font-size="18" font-weight="400" fill="#38bdf8" letter-spacing="6">DMJ.IO</text>
+
+  <!-- Name -->
+  <text x="100" y="290" font-family="monospace" font-size="96" font-weight="400" fill="#ffffff" letter-spacing="-4">dmjio</text>
+
+  <!-- Full name -->
+  <text x="104" y="348" font-family="Georgia, serif" font-size="28" font-weight="300" fill="#c0c8d8" font-style="italic">David M. Johnson</text>
+
+  <!-- Type sig -->
+  <text x="104" y="420" font-family="monospace" font-size="18" font-weight="300">
+    <tspan fill="#38bdf8">::</tspan>
+    <tspan fill="#c0c8d8"> Engineer </tspan>
+    <tspan fill="#58607a">→</tspan>
+    <tspan fill="#c0c8d8"> Researcher </tspan>
+    <tspan fill="#58607a">→</tspan>
+    <tspan fill="#c0c8d8"> Builder</tspan>
+  </text>
+
+  <!-- Stats -->
+  <text x="104" y="510" font-family="monospace" font-size="14" font-weight="300" fill="#58607a" letter-spacing="2">17 YRS PROFESSIONAL  ·  MSc COMPUTER SCIENCE  ·  GHC HASKELL</text>
+</svg>
